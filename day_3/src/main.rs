@@ -4,9 +4,9 @@ fn main() {
     // 6261125 too high
     // 6391179 too high
     println!("Part 1: {}", result);
-    let input = include_str!("./input.txt");
-    let result = part_2(input);
-    println!("Part 2: {}", result);
+    // let input = include_str!("./input.txt");
+    // let result = part_2(input);
+    // println!("Part 2: {}", result);
 }
 
 enum XAxis {
@@ -33,31 +33,30 @@ fn part_1(input: &str) -> i32 {
     let mut number_buffer: String = String::new();
     let mut number_has_char_around: bool = false;
 
-    for x in 0..input_char_length {
-        if let Some(val) = &input.chars().nth(x) {
-            if val.is_digit(10) == false {
-                if number_buffer.len() > 0 {
-                    let parsed_number = number_buffer.parse::<i32>().expect("Failed to parse int.");
 
-                    if number_has_char_around == true {
-                        println!("{} + {} = {}", &parsed_number,  &answer, &answer + &parsed_number);
-                        answer = answer + parsed_number;
-                    } else {
-                        println!("{} did not have chars around it.", &parsed_number);
-                    }
+    for (index, char_val) in input.chars().enumerate() {
+        if char_val.is_digit(10) == false {
+            if number_buffer.len() > 0 {
+                let parsed_number = number_buffer.parse::<i32>().expect("Failed to parse int.");
 
-                    number_buffer = String::new();
-                    number_has_char_around = false;
+                if number_has_char_around == true {
+                    println!("{} + {} = {}", &parsed_number,  &answer, &answer + &parsed_number);
+                    answer = answer + parsed_number;
+                } else {
+                    println!("{} did not have chars around it.", &parsed_number);
                 }
-                continue;
-            } else {
-                number_buffer.push_str(val.to_string().as_str());
-                // dbg!(&number_buffer);
-                if check_all_positions_around_char(&input, x.try_into().expect("Error converting usize."), line_length) {
-                    number_has_char_around = true;
-                }
+
+                number_buffer = String::new();
+                number_has_char_around = false;
             }
-        } 
+            continue;
+        } else {
+            number_buffer.push_str(char_val.to_string().as_str());
+            // dbg!(&number_buffer);
+            if check_all_positions_around_char(&input, index.try_into().expect("Error converting usize."), line_length).len() > 0 {
+                number_has_char_around = true;
+            }
+        }
     }
     answer
 }
@@ -99,7 +98,7 @@ fn part_2(input: &str) -> i32 {
             } else {
                 number_buffer.push_str(val.to_string().as_str());
                 // dbg!(&number_buffer);
-                if check_all_positions_around_char(&input, x.try_into().expect("Error converting usize."), line_length) {
+                if check_all_positions_around_char(&input, x.try_into().expect("Error converting usize."), line_length).len() > 0 {
                     number_has_char_around = true;
                 }
             }
@@ -109,7 +108,7 @@ fn part_2(input: &str) -> i32 {
 }
 
 
-fn check_all_positions_around_char(input: &String, index: i32, line_length: i32) -> bool {
+fn check_all_positions_around_char(input: &String, index: i32, line_length: i32) -> Vec<char> {
     let places_to_check: [(XAxis, YAxis); 8] = [
         (XAxis::Left, YAxis::Up),
         (XAxis::Center, YAxis::Up),
@@ -120,6 +119,8 @@ fn check_all_positions_around_char(input: &String, index: i32, line_length: i32)
         (XAxis::Center, YAxis::Down),
         (XAxis::Right, YAxis::Down),
     ];
+
+    let mut adjacent_chars: Vec<char> = vec![];
 
     for place_to_check in places_to_check {
         match get_char_at_coord(
@@ -133,7 +134,7 @@ fn check_all_positions_around_char(input: &String, index: i32, line_length: i32)
             Some(found_char) => {
                 if found_char.is_digit(10) == false && found_char.clone() != '.' {
                     // println!("Found the symbol char: {}", &found_char);
-                    return true
+                    adjacent_chars.push(found_char)
                 } else {
                     // println!("Char is not a number: {}", &found_char);
                 }
@@ -141,7 +142,7 @@ fn check_all_positions_around_char(input: &String, index: i32, line_length: i32)
         }
     }
 
-    false
+    adjacent_chars
 }
 
 fn get_char_at_coord (input: String, index: i32, line_length: i32, x_axis: XAxis, y_axis: YAxis) -> Option<char> {
@@ -180,7 +181,7 @@ mod tests {
         assert_eq!(result, 4361);
     }
 
-    #[test]
+    // #[test]
     fn part_2_test() {
         let input = include_str!("./part_2_test_input.txt");
         let result = part_2(input);
