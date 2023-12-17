@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 fn main() {
     let input = include_str!("./input.txt");
     let result = part_1(input);
@@ -115,7 +113,6 @@ fn part_1(input: &str) -> u32 {
 
 
 fn part_2(input: &str) -> u32 {
-    const CONFIGURATION: (u8,u8,u8) = (12,13,14);
     let lines: Vec<&str> = input.split('\n').collect();
     let mut games: Vec<Game> = Vec::new();
 

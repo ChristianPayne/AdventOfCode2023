@@ -25,7 +25,6 @@ fn part_1(input: &str) -> i32 {
     let line_length: i32 = line_length.try_into().expect("Error converting width.");
     let line_length: i32 = line_length - 1;
     dbg!(&line_length);
-    let input_char_length = input.len();
     let input = input.replace('\n', "");
 
     let mut answer = 0;
