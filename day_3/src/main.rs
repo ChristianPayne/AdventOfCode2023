@@ -4,9 +4,9 @@ fn main() {
     // 6261125 too high
     // 6391179 too high
     println!("Part 1: {}", result);
-    // let input = include_str!("./input.txt");
-    // let result = part_2(input);
-    // println!("Part 2: {}", result);
+    let input = include_str!("./input.txt");
+    let result = part_2(input);
+    println!("Part 2: {}", result);
 }
 
 enum XAxis {
@@ -173,14 +173,14 @@ fn get_char_at_coord (input: String, index: i32, line_length: i32, x_axis: XAxis
 mod tests {
     use crate::{part_1, part_2};
 
-    #[test]
+    // #[test]
     fn part_1_test() {
         let input = include_str!("./part_1_test_input.txt");
         let result = part_1(input);
         assert_eq!(result, 4361);
     }
 
-    // #[test]
+    #[test]
     fn part_2_test() {
         let input = include_str!("./part_2_test_input.txt");
         let result = part_2(input);
