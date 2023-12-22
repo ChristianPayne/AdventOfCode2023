@@ -16,9 +16,8 @@ fn part_1(input: &str, winning_numbers_index: (usize, usize), my_numbers_index: 
     struct Card {
         score: i32
     }
-    let cards_input = input.split('\n');
 
-    cards_input.map(|card_input| {
+    input.split('\n').map(|card_input| {
         let winning_numbers: Vec<i32> = card_input
             .substring(winning_numbers_index.0, winning_numbers_index.1)
             .split(' ')
@@ -30,9 +29,12 @@ fn part_1(input: &str, winning_numbers_index: (usize, usize), my_numbers_index: 
             .filter_map(|x| x.trim().parse::<i32>().ok())
             .collect();
 
-        let my_winning_numbers: Vec<&i32> = winning_numbers.iter().filter(|winning| {
-            my_numbers.contains(&winning)
-        }).collect();
+        let my_winning_numbers: Vec<&i32> = winning_numbers
+            .iter()
+            .filter(|winning| {
+                my_numbers.contains(&winning)
+            })
+            .collect();
 
         let score: i32 = match my_winning_numbers.len() {
             0 => 0,
