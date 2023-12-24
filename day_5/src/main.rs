@@ -63,9 +63,9 @@ fn main() {
     let input = include_str!("./input.json");
     let result = part_1(input);
     println!("Part 1: {}", result);
-    // let input = include_str!("./input.json");
-    // let result = part_2(input);
-    // println!("Part 2: {}", result);
+    let input = include_str!("./input.json");
+    let result = part_2(input);
+    println!("Part 2: {}", result);
 }
 
 
@@ -88,20 +88,13 @@ fn part_1(input: &str) -> i64 {
     for seed in input.seeds {
         let seed = seed.parse::<i64>().unwrap();
         let value = convert_source_using_range(seed, &Map::from(input.seed_to_soil_map.clone()));
-        dbg!(&value);
         let value = convert_source_using_range(value, &Map::from(input.soil_to_fertilizer_map.clone()));
-        dbg!(&value);
         let value = convert_source_using_range(value, &Map::from(input.fertilizer_to_water_map.clone()));
-        dbg!(&value);
         let value = convert_source_using_range(value, &Map::from(input.water_to_light_map.clone()));
-        dbg!(&value);
         let value = convert_source_using_range(value, &Map::from(input.light_to_temperature_map.clone()));
-        dbg!(&value);
         let value = convert_source_using_range(value, &Map::from(input.temperature_to_humidity_map.clone()));
-        dbg!(&value);
         let value = convert_source_using_range(value, &Map::from(input.humidity_to_location_map.clone()));
-        dbg!(&value);
-        println!("Final value is {}", value);
+        println!("Seed {}'s final location is {}", seed, value);
         seedResults.push(value);
     }
 
